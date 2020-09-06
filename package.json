@@ -1,0 +1,31 @@
+{
+  "name": "Opify",
+  "version": "1.0.0",
+  "description": "An open source  lossless Spotify alternative",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CrazyTech4/Opify.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CrazyTech4/Opify/issues"
+  },
+  "homepage": "https://github.com/CrazyTech4/Opify#readme",
+  "dependencies": {
+    "@types/express": "^4.17.8",
+    "@types/graphql": "^14.5.0",
+    "@types/mysql2": "github:types/mysql2",
+    "express": "^4.17.1",
+    "express-graphql": "^0.11.0",
+    "graphql": "^15.3.0",
+    "mysql2": "^2.1.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.2"
+  }
+}
