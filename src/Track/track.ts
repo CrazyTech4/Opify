@@ -1,4 +1,4 @@
-import { Entity } from "../repository";
+import { Entity } from "../Database/repository";
 import { TrackData } from "./track-data";
 
 

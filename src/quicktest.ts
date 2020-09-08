@@ -1,10 +1,53 @@
+import { Database } from "./database.class";
+import { Genre } from "./Database/DownloadQueue/ToBeDownloaded/Genre/genre";
+import { Playlist } from "./Database/Playlist/playlist";
+import { User } from "./Database/User/user";
 import { Track } from "./Track/track";
 
 (async () => {
+    await Database.execute('DELETE FROM Track;');
+    await Database.execute('DELETE FROM Genre;');
+    await Database.execute('UPDATE User SET favorite_playlist_id=NULL;');
+    await Database.execute('DELETE FROM Playlist;');
+    await Database.execute('DELETE FROM User;');
+
+    const genre = new Genre({
+        name: 'Pop'
+    });
+
+    await genre.insert();
+
     const track = new Track({
         title: 'Ein Test Track',
-        filepath: 'c:\\cool'
+        filepath: 'c:\\cool',
+        genre: genre
     });
 
     await track.insert();
-})
+
+    const user = new User({
+        name: 'olli',
+        email: 'ollies@werkzeug-shop.de',
+        password_hash: 'ABC'
+    });
+
+    await user.insert();
+
+    const playlist = new Playlist({
+        name: 'Favoritenliste',
+        is_private: false,
+        owner: user
+    });
+
+    await playlist.insert();
+
+    user.set({
+        favorite_playlist: playlist
+    });
+
+    user.update();
+
+    await Database.disconnect();
+})();
+
+

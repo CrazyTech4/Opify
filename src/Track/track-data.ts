@@ -1,3 +1,4 @@
+import { Genre } from "../Database/DownloadQueue/ToBeDownloaded/Genre/genre";
 
 export interface TrackData {
     id: number;
@@ -10,7 +11,8 @@ export interface TrackData {
     artist_id: number;
     volume_id: number;
 
-    last_fm_id: number;
+    tidal_id: number;
     release_date: Date;
+    genre: Genre;
     genre_id: number;
 }

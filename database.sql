@@ -1,9 +1,10 @@
 
+
 DROP DATABASE IF EXISTS lossle;
 CREATE DATABASE lossle;
 USE lossle;
 
-
+SET foreign_key_checks = 0;
 
 CREATE TABLE Artist (
     id BIGINT AUTO_INCREMENT,
@@ -137,7 +138,10 @@ CREATE TABLE User (
     email VARCHAR(50) NOT NULL,
     password_hash TEXT NOT NULL,
 
-    PRIMARY KEY (id)
+    favorite_playlist_id BIGINT,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (favorite_playlist_id) REFERENCES Playlist(id)
 );
 
 
@@ -238,3 +242,4 @@ VALUES ('currently_playing', 4),
        ('public_playlist', 1);
 
 
+SET foreign_key_checks = 1;
