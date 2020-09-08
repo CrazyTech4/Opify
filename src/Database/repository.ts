@@ -1,4 +1,4 @@
-import { Database } from "../database.class";
+import { Database } from "./database.class";
 
 interface EntityData {
     id?: number;

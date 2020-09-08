@@ -1,8 +1,8 @@
-import { Database } from "./database.class";
-import { Genre } from "./Database/DownloadQueue/ToBeDownloaded/Genre/genre";
+import { Database } from "./Database/database.class";
+import { Genre } from "./Database/Genre/genre";
 import { Playlist } from "./Database/Playlist/playlist";
 import { User } from "./Database/User/user";
-import { Track } from "./Track/track";
+import { Track } from "./Database/Track/track";
 
 (async () => {
     await Database.execute('DELETE FROM Track;');

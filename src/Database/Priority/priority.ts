@@ -1,4 +1,4 @@
-import { Entity } from "../../../repository";
+import { Entity } from "../repository";
 import { DownloadPriorityData } from "./priority-data";
 
 
