@@ -45,7 +45,7 @@ import { Track } from "./Database/Track/track";
         favorite_playlist: playlist
     });
 
-    user.update();
+    await user.update();
 
     await Database.disconnect();
 })();
