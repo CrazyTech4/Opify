@@ -27,7 +27,7 @@ import { Track } from "./Database/Track/track";
 
     const user = new User({
         name: 'olli',
-        email: 'ollies@werkzeug-shop.de',
+        email: 'ollis@werkzeug-shop.de',
         password_hash: 'ABC'
     });
 
