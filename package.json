@@ -1,10 +1,10 @@
 {
-  "name": "Opify",
+  "name": "lossle",
   "version": "1.0.0",
   "description": "An open source  lossless Spotify alternative",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index"
+    "start": "ts-node src/quicktest"
   },
   "repository": {
     "type": "git",
