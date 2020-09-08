@@ -21,7 +21,7 @@ export class Database {
         return await this.connection.execute(sql, values);
     }
 
-    static async fetchAll(sql: string, values?: any) {
+    static async query(sql: string, values?: any) {
         await this.init();
         return await this.connection.query(sql, values);
     }
@@ -29,7 +29,7 @@ export class Database {
     // TODO: Thats really dirtyy
     static async fetchAllInto(sql: string, values: any, type: any) {
         await this.init();
-        const result = await this.fetchAll(sql, values);
+        const result = await this.query(sql, values);
         return result.map(item => {
             const a = new type();
             a.set(item);
