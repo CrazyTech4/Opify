@@ -1,12 +1,12 @@
 
-DROP DATABASE IF EXISTS opify;
-CREATE DATABASE opify;
-USE opify;
+DROP DATABASE IF EXISTS lossle;
+CREATE DATABASE lossle;
+USE lossle;
 
 
 
 CREATE TABLE Artist (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
     name VARCHAR(40) NOT NULL,
 
     PRIMARY KEY (id),
@@ -14,24 +14,24 @@ CREATE TABLE Artist (
 );
 
 CREATE TABLE Album (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
 
     -- indexed from storage
     name TEXT NOT NULL,
     album_cover_filepath TEXT NOT NULL,
     artist_id BIGINT NOT NULL,
     
-    -- data from last.fm
-    last_fm_id BIGINT,
+    -- data from tidal
+    tidal_id BIGINT,
     release_date DATE,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (album_id) REFERENCES Album(id),
+    FOREIGN KEY (artist_id) REFERENCES Artist(id),
     FULLTEXT (name)
 );
 
 CREATE TABLE SimilarAlbum (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
 
     album1_id BIGINT NOT NULL,
     album2_id BIGINT NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE SimilarAlbum (
 );
 
 CREATE TABLE Volume (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
 
     -- indexed from storage
     name VARCHAR(40) NOT NULL,
@@ -50,19 +50,19 @@ CREATE TABLE Volume (
     album_id BIGINT NOT NULL,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (album_id) REFERENCES Album(id),
+    FOREIGN KEY (album_id) REFERENCES Album(id)
 );
 
--- fetched from last.fm
+-- fetched from tidal
 CREATE TABLE Genre (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
     name VARCHAR(40) NOT NULL,
 
     PRIMARY KEY (id)
 );
 
 CREATE TABLE SimilarGenre (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
 
     genre1_id BIGINT NOT NULL,
     genre2_id BIGINT NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE SimilarGenre (
 );
 
 CREATE TABLE Track (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
     title TEXT NOT NULL,
     
     -- maybe not downloaded, yet
@@ -85,8 +85,8 @@ CREATE TABLE Track (
     volume_id BIGINT,
     -- thumbnail is in the file (could use albumcover though)
     
-    -- info needs to be fetched from last.fm
-    last_fm_id BIGINT,
+    -- info needs to be fetched from tidal
+    tidal_id BIGINT,
     release_date DATE,
     genre_id BIGINT,
 
@@ -98,7 +98,7 @@ CREATE TABLE Track (
 );
 
 CREATE TABLE SimilarTrack (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
 
     track1_id BIGINT NOT NULL,
     track2_id BIGINT NOT NULL,
@@ -109,19 +109,19 @@ CREATE TABLE SimilarTrack (
 );
 
 CREATE TABLE JoinTable_TrackGenre (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
     
     track_id BIGINT NOT NULL,
     genre_id BIGINT NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (track_id) REFERENCES Track(id),
-    FOREIGN KEY (genre_id) REFERENCES Genre(id),
+    FOREIGN KEY (genre_id) REFERENCES Genre(id)
 );
 
 -- indexed by storage
 CREATE TABLE Feature (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
 
     track_id BIGINT NOT NULL,
     artist_id BIGINT NOT NULL,
@@ -132,7 +132,7 @@ CREATE TABLE Feature (
 );
 
 CREATE TABLE User (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
     name VARCHAR(40) NOT NULL,
     email VARCHAR(50) NOT NULL,
     password_hash TEXT NOT NULL,
@@ -140,33 +140,34 @@ CREATE TABLE User (
     PRIMARY KEY (id)
 );
 
+
 CREATE TABLE APIApplication (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
     user_id BIGINT NOT NULL,
     client_id TEXT NOT NULL,
-    scope TEXT DEFAULT 'any',
+    scope TEXT,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES User(id),
-)
+    FOREIGN KEY (user_id) REFERENCES User(id)
+);
 
 CREATE TABLE UserTwoFactorAuth (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
     user_id BIGINT NOT NULL,
     secret_code TEXT NOT NULL,
     application_id BIGINT NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES User(id),
-    FOREIGN KEY (application_id) REFERENCES APIApplication(id),
-)
-
-CREATE TABLE UserAccessProcess (
-    -- ... wip
+    FOREIGN KEY (application_id) REFERENCES APIApplication(id)
 );
 
+-- CREATE TABLE UserAccessProcess (
+--     -- ... wip
+-- );
+
 CREATE TABLE UserAccess (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
     user_id BIGINT NOT NULL,
     access_token TEXT NOT NULL,
     reload_token TEXT NOT NULL,
@@ -174,12 +175,13 @@ CREATE TABLE UserAccess (
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES User(id),
-    FOREIGN KEY (authentication_id) REFERENCES UserTwoFactorAuth(id),
+    FOREIGN KEY (authentication_id) REFERENCES UserTwoFactorAuth(id)
 );
 
 CREATE TABLE Playlist (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
     name VARCHAR(40) NOT NULL,
+    is_private BOOLEAN NOT NULL,
     owner_id BIGINT NOT NULL,
     
     PRIMARY KEY (id),
@@ -188,7 +190,7 @@ CREATE TABLE Playlist (
 );
 
 CREATE TABLE JoinTable_PlaylistTrack (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
 
     track_id BIGINT NOT NULL,
     playlist_id BIGINT NOT NULL,
@@ -199,7 +201,7 @@ CREATE TABLE JoinTable_PlaylistTrack (
 );
 
 CREATE TABLE JoinTable_PlaylistFollow (
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT,
 
     user_id BIGINT NOT NULL,
     playlist_id BIGINT NOT NULL,
@@ -209,4 +211,30 @@ CREATE TABLE JoinTable_PlaylistFollow (
     FOREIGN KEY (playlist_id) REFERENCES Playlist(id)
 );
 
--- queues needed
+
+CREATE TABLE DownloadPriority (
+    id BIGINT AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL,
+    priority INT NOT NULL,
+
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE ToBeDownloaded (
+    id BIGINT AUTO_INCREMENT,
+    track_id BIGINT NOT NULL,
+    priority_id BIGINT NOT NULL,
+    request_time TIMESTAMP NOT NULL,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (priority_id) REFERENCES DownloadPriority(id)
+);
+
+
+INSERT INTO DownloadPriority (name, priority)
+VALUES ('currently_playing', 4),
+       ('user_liked_tracks', 3),
+       ('private_playlist', 2),
+       ('public_playlist', 1);
+
+
