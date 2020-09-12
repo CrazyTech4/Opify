@@ -46,7 +46,6 @@ CREATE TABLE Volume (
     id BIGINT AUTO_INCREMENT,
 
     -- indexed from storage
-    name VARCHAR(40) NOT NULL,
     part INT NOT NULL,
     album_id BIGINT NOT NULL,
 
@@ -82,7 +81,6 @@ CREATE TABLE Track (
     bitrate INT,
     duration INT, -- in seconds
     is_explicit BOOLEAN,
-    artist_id BIGINT,
     volume_id BIGINT,
     -- thumbnail is in the file (could use albumcover though)
     
@@ -92,7 +90,6 @@ CREATE TABLE Track (
     genre_id BIGINT,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (artist_id) REFERENCES Artist(id),
     FOREIGN KEY (volume_id) REFERENCES Volume(id),
     FOREIGN KEY (genre_id) REFERENCES Genre(id),
     FULLTEXT (title)
@@ -235,11 +232,51 @@ CREATE TABLE ToBeDownloaded (
 );
 
 
+
 INSERT INTO DownloadPriority (name, priority)
 VALUES ('currently_playing', 4),
        ('user_liked_tracks', 3),
        ('private_playlist', 2),
        ('public_playlist', 1);
+
+INSERT INTO Artist (name)
+VALUES ('Thilo'),
+       ('Lukas'),
+       ('Gerrit');
+
+INSERT INTO Album (name, album_cover_filepath, artist_id)
+VALUES ('Brumm', '', 1),
+       ('Summ', '', 1),
+       ('Yeet!', '', 2),
+       ('Auf gehts', '', 2);
+
+INSERT INTO Volume (part, album_id)
+VALUES (1, 1),
+       (1, 2);
+
+INSERT INTO Track (title, volume_id)
+VALUES ('Lalala', 1),
+       ('Blub', 1),
+       ('Yolodido', 2),
+       ('Schmeckt mir', 2);
+
+INSERT INTO User (name, email, password_hash)
+VALUES ('Thilo', 'thilo@krass.de', 'ABC'),
+       ('Lukas', 'lukas@krass.de', 'ABC'),
+       ('Gerrit', 'gerrit@krass.de', 'ABC');
+
+INSERT INTO Playlist (name, is_private, owner_id)
+VALUES ('Playlist 1', 0, 1),
+       ('Playlist 2', 0, 2),
+       ('Playlist 3', 0, 3);
+
+INSERT INTO JoinTable_PlaylistTrack (playlist_id, track_id)
+VALUES (1, 1),
+       (1, 2),
+       (1, 3),
+       (2, 1),
+       (2, 3),
+       (3, 1);
 
 
 SET foreign_key_checks = 1;
