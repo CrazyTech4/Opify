@@ -9,6 +9,8 @@ import { TrackResolver } from './Database/Track/track.resolver';
 import { VolumeResolver } from './Database/Volume/volume.resolver';
 import { PlaylistResolver } from './Database/Playlist/playlist.resolver';
 import { UserResolver } from './Database/User/user.resolver';
+import { SessionResolver } from './Database/Session/session.resolver';
+import { QueueResolver } from './Database/Queue/queue.resolver';
 
 // TODO: use the Database Entities and represent them here
 // The GraphQL Schemas should be created as seperate files in the Database folder
@@ -27,7 +29,10 @@ import { UserResolver } from './Database/User/user.resolver';
       TrackResolver,
       VolumeResolver,
       UserResolver,
-      PlaylistResolver
+      PlaylistResolver,
+      UserResolver,
+      SessionResolver,
+      QueueResolver
     ],
     container: Container
   });

@@ -2,11 +2,12 @@ import { Service } from "typedi/decorators/Service";
 import { Album } from "../Album/album.entity";
 import { DatabaseService } from "../database-service";
 import { Volume } from "./volume.entity";
-import { NewVolumeInput } from "./volume.input";
+import { UpdateVolumeInput } from "./update-volume.input";
+import { NewVolumeInput } from "./new-volume.input";
 
 
 @Service()
-export class VolumeService extends DatabaseService<Volume, NewVolumeInput> {
+export class VolumeService extends DatabaseService<Volume, NewVolumeInput, UpdateVolumeInput> {
     constructor() {
         super('Volume', Volume);
     }

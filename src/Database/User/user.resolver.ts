@@ -2,8 +2,8 @@ import { Arg, Args, Authorized, Ctx, FieldResolver, Mutation, Query, Resolver, R
 import { Service } from "typedi/decorators/Service";
 import { PlaylistService } from "../Playlist/playlist.service";
 import { User } from "../User/user.entity";
-import { NewUserInput } from "../User/user.input";
 import { UserService } from "../User/user.service";
+import { NewUserInput } from "./new-user.input";
 
 @Service()
 @Resolver(of => User)
@@ -25,9 +25,19 @@ export class UserResolver {
         return await this.playlistService.findById(user.favoritePlaylistId);
     }
 
+    @FieldResolver()
+    async sessions(@Root() user: User) {
+        return await this.userService.getSessions(user.id);
+    }
+
+    @FieldResolver()
+    async playlistFollowings(@Root() user: User) {
+        return await this.userService.getPlaylistFollowings(user.id);
+    }
+
     @Mutation(returns => User)
     // @Authorized()
-    async addWolume(@Arg('userData') user: NewUserInput) {
+    async addUser(@Arg('userData') user: NewUserInput) {
         return await this.userService.add(user);
     }
 

@@ -2,8 +2,8 @@ import { Arg, Args, Authorized, Ctx, FieldResolver, Mutation, Query, Resolver, R
 import { Service } from "typedi/decorators/Service";
 import { ArtistService } from "../Artist/artist.service";
 import { VolumeService } from "../Volume/volume.service";
+import { NewTrackInput } from "./new-track.input";
 import { Track } from "./track.entity";
-import { NewTrackInput } from "./track.input";
 import { TrackService } from "./track.service";
 
 @Service()
@@ -24,7 +24,17 @@ export class TrackResolver {
 
     @FieldResolver()
     async artist(@Root() track: Track) {
-        return await this.artistService.findById(track.artistId);
+        return await this.trackService.getArtist(track.id);
+    }
+
+    @FieldResolver()
+    async album(@Root() track: Track) {
+        return await this.trackService.getAlbum(track.id);
+    }
+
+    @FieldResolver()
+    async features(@Root() track: Track) {
+        return await this.trackService.getFeatures(track.id);
     }
 
     @FieldResolver()

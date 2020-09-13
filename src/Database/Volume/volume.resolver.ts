@@ -3,8 +3,8 @@ import { Service } from "typedi/decorators/Service";
 import { AlbumService } from "../Album/album.service";
 import { ArtistService } from "../Artist/artist.service";
 import { RangeArgs } from "../range.args";
+import { NewVolumeInput } from "./new-volume.input";
 import { Volume } from "./volume.entity";
-import { NewVolumeInput } from "./volume.input";
 import { VolumeService } from "./volume.service";
 
 @Service()

@@ -37,34 +37,6 @@ export class Database {
         return await this.query(sql, values); 
     }
 
-    // // TODO: Thats really dirtyy
-    // private convertInto(data: any, type: any, intoWhat: Function) {
-    //     const result = new type();
-    //     console.log('converting', data);
-    //     Object.keys(data)
-    //         .forEach(key => {
-    //             console.log(`result[${intoWhat(key)}] = data[${key}]`);
-    //             result[intoWhat(key)] = data[key];
-    //         });
-    //     return result;
-    // }
-
-    
-    // async fetchInto(sql: string, values: any, type: any) {
-    //     await this.connect();
-    //     const result = (await this.query(sql, values))[0];
-    //     const converted = this.convertInto(result, type, this.toCamelCase);
-    //     console.log(converted);
-    //     return converted;
-    // }
-
-    // // TODO: Thats really dirtyy
-    // async fetchAllInto(sql: string, values: any, type: any) {
-    //     await this.connect();
-    //     const result = await this.query(sql, values);
-    //     return result.map(item => this.convertInto(item, type, this.toCamelCase));
-    // }
-
     async disconnect() {
         if (!this.connection) {
             return;

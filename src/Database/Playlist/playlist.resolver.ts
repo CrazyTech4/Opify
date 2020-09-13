@@ -4,7 +4,7 @@ import { RangeArgs } from "../range.args";
 import { Track } from "../Track/track.entity";
 import { UserService } from "../User/user.service";
 import { Playlist } from "./playlist.entity";
-import { NewPlaylistInput } from "./playlist.input";
+import { NewPlaylistInput } from "./new-playlist.input";
 import { PlaylistService } from "./playlist.service";
 
 @Service()
@@ -34,18 +34,18 @@ export class PlaylistResolver {
     }
 
     @Mutation(returns => Playlist)
+    async addTrackToPlaylist(@Arg('trackId') trackId: number,
+                             @Arg('playlistId') playlistId: number) {
+        return await this.playlistService.addTrack(trackId, playlistId);
+    }
+
+    @Mutation(returns => Playlist)
     async addPlaylist(@Arg('playlistData') playlist: NewPlaylistInput) {
         return await this.playlistService.add(playlist);
     }
 
     @Mutation(returns => Boolean)
     async removePlaylist(@Arg('id') id: number) {
-        // FIXME: always returns true
-        try {
-            await this.playlistService.remove(id);
-            return true;
-        } catch {
-            return false;
-        }
+        return await this.playlistService.remove(id);
     }
 }

@@ -3,7 +3,7 @@ import { Service } from "typedi/decorators/Service";
 import { ArtistService } from "../Artist/artist.service";
 import { RangeArgs } from "../range.args";
 import { Album } from "./album.entity";
-import { NewAlbumInput } from "./album.input";
+import { NewAlbumInput } from "./new-album.input";
 import { AlbumService } from "./album.service";
 
 @Service()
